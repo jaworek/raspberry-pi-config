@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   portainer:
@@ -11,6 +11,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
       - 'portainer_data:/data portainer/portainer'
     restart: unless-stopped
+
   mozilla-iot:
     container_name: mozilla-iot
     image: mozillaiot/gateway:arm
@@ -21,6 +22,7 @@ services:
     volumes:
       - 'mozilla-iot:/home/node/.mozilla-iot'
     restart: unless-stopped
+
   # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
   pihole:
     container_name: pihole
@@ -39,7 +41,6 @@ services:
       CONDITIONAL_FORWARDING: "True"
       CONDITIONAL_FORWARDING_IP: 192.168.1.1
       CONDITIONAL_FORWARDING_DOMAIN: domek
-    # Volumes store your data between container upgrades
     volumes:
       - './etc-pihole/:/etc/pihole/'
       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
@@ -52,6 +53,28 @@ services:
       - NET_ADMIN
     restart: unless-stopped
 
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome:arm64-latest
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '67:67/udp'
+      - '68:68/tcp'
+      - '68:68/udp'
+      - '80:80/tcp'
+      - '443:443/tcp'
+      - '853:853/tcp'
+      - '3000:3000/tcp'
+    network_mode: host
+    volumes:
+      - 'adguard-data:/opt/adguardhome/work'
+      - 'adguard-config:/opt/adguardhome/conf'
+    restart: unless-stopped
+
+
 volumes:
     portainer_data:
     mozilla-iot:
+    adguard-data:
+    adguard-config:
