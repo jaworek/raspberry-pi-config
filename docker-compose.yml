@@ -14,7 +14,7 @@ services:
 
   mozilla-iot:
     container_name: mozilla-iot
-    image: mozillaiot/gateway:arm
+    image: mozillaiot/gateway
     ports:
       - "8080:8080"
       - "4443:4443"
@@ -55,7 +55,7 @@ services:
 
   adguard:
     container_name: adguard
-    image: adguard/adguardhome:arm64-latest
+    image: adguard/adguardhome:armhf-latest
     ports:
       - '53:53/tcp'
       - '53:53/udp'
