@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  mozilla-iot:
+    container_name: mozilla-iot
+    image: mozillaiot/gateway:arm
+    ports:
+      - "8080:8080"
+      - "4443:4443"
+    network_mode: host
+    volumes:
+      - 'mozilla-iot:/home/node/.mozilla-iot'
+    restart: unless-stopped
+
+volumes:
+  mozilla-iot:

@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  openvpn:
+    container_name: openvpn
+    image: mjenz/rpi-openvpn
+    ports:
+      - '1194:1194/udp'
+    volumes:
+      - 'openvpn-data:/etc/openvpn'
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+volumes:
+  openvpn-data:
