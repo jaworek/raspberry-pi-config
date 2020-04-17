@@ -72,9 +72,31 @@ services:
       - 'adguard-config:/opt/adguardhome/conf'
     restart: unless-stopped
 
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Warsaw
+      - SERVERURL=home.jwr.ski #optional
+      - SERVERPORT=51820 #optional
+      - PEERS=1 #optional
+      - PEERDNS=auto #optional
+      - INTERNAL_SUBNET=10.13.13.0 #optional
+    volumes:
+      - 'wireguard-config:/config'
+      - '/lib/modules:/lib/modules'
+    ports:
+      - 51820:51820/udp
+    restart: unless-stopped
 
 volumes:
     portainer_data:
     mozilla-iot:
     adguard-data:
     adguard-config:
+    wireguard-config:
