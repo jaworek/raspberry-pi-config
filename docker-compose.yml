@@ -64,9 +64,32 @@ services:
       - 51820:51820/udp
     restart: unless-stopped
 
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=username #optional
+      - PASS=password #optional
+    volumes:
+      - transmission-config:/config
+      - transmission-downloads:/downloads
+      - transmission-watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+
 volumes:
     portainer_data:
     mozilla-iot:
     adguard-data:
     adguard-config:
     wireguard-config:
+    transmission-config:
+    transmission-downloads:
+    transmission-watch:
