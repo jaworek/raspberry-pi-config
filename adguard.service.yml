@@ -2,23 +2,23 @@ version: "3.7"
 
 services:
   adguard:
-      container_name: adguard
-      image: adguard/adguardhome:arm64-latest
-      ports:
-        - '53:53/tcp'
-        - '53:53/udp'
-        - '67:67/udp'
-        - '68:68/tcp'
-        - '68:68/udp'
-        - '80:80/tcp'
-        - '443:443/tcp'
-        - '853:853/tcp'
-        - '3000:3000/tcp'
-      network_mode: host
-      volumes:
-        - 'adguard-data:/opt/adguardhome/work'
-        - 'adguard-config:/opt/adguardhome/conf'
-      restart: unless-stopped
+    container_name: adguard
+    image: adguard/adguardhome
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '67:67/udp'
+      - '68:68/tcp'
+      - '68:68/udp'
+      - '80:80/tcp'
+      - '443:443/tcp'
+      - '853:853/tcp'
+      - '3000:3000/tcp'
+    network_mode: host
+    volumes:
+      - 'adguard-data:/opt/adguardhome/work'
+      - 'adguard-config:/opt/adguardhome/conf'
+    restart: unless-stopped
 
 volumes:
   adguard-data:
