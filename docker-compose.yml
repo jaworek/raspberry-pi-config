@@ -3,7 +3,7 @@ version: "3.7"
 services:
   portainer:
     container_name: portainer
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -12,20 +12,9 @@ services:
       - 'portainer_data:/data portainer/portainer'
     restart: unless-stopped
 
-  mozilla-iot:
-    container_name: mozilla-iot
-    image: mozillaiot/gateway
-    ports:
-      - "8080:8080"
-      - "4443:4443"
-    network_mode: host
-    volumes:
-      - 'mozilla-iot:/home/node/.mozilla-iot'
-    restart: unless-stopped
-
   adguard:
     container_name: adguard
-    image: adguard/adguardhome:armhf-latest
+    image: adguard/adguardhome
     ports:
       - '53:53/tcp'
       - '53:53/udp'
@@ -86,7 +75,6 @@ services:
 
 volumes:
     portainer_data:
-    mozilla-iot:
     adguard-data:
     adguard-config:
     wireguard-config:
