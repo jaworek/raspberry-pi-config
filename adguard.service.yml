@@ -1,8 +1,8 @@
-version: "3.7"
+version: "3.8"
 
 services:
   adguard:
-    container_name: adguard
+    container_name: adguard2
     image: adguard/adguardhome
     ports:
       - '53:53/tcp'
