@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  unbound:
+    container_name: unbound
+    image: klutchell/unbound:latest
+    ports:
+      - '5053:5053/tcp'
+      - '5053:5053/udp'
+    volumes:
+      - 'unbound-config:/etc/unbound' 
+    restart: unless-stopped
+
+volumes:
+  unbound-config:
