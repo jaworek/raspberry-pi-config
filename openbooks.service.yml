@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  openbooks:
+    image: evanbuss/openbooks
+    command: --persist
+    ports: 
+      - "8080:80"
+    volumes:
+      - "openbooks-data:/books"
+
+volumes:
+  openbooks-data:
