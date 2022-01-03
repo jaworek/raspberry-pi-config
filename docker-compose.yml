@@ -1,9 +1,12 @@
-version: "3.7"
+version: "3.8"
 
 services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
+    labels:
+      - traefik.http.routers.portainer.rule=Host(`portainer.chuj`)
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -15,69 +18,59 @@ services:
   adguard:
     container_name: adguard
     image: adguard/adguardhome
+    labels:
+      - traefik.http.routers.adguard.rule=Host(`adguard.chuj`)
+      - traefik.http.services.adguard.loadbalancer.server.port=80
     ports:
       - '53:53/tcp'
       - '53:53/udp'
-      - '67:67/udp'
-      - '68:68/tcp'
-      - '68:68/udp'
-      - '80:80/tcp'
+      - '9001:80/tcp'
       - '443:443/tcp'
-      - '853:853/tcp'
+      - '443:443/udp'
       - '3000:3000/tcp'
-    network_mode: host
+        #    network_mode: host
     volumes:
       - 'adguard-data:/opt/adguardhome/work'
       - 'adguard-config:/opt/adguardhome/conf'
     restart: unless-stopped
 
-  wireguard:
-    image: linuxserver/wireguard
-    container_name: wireguard
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Warsaw
-      - SERVERURL=home.jwr.ski #optional
-      - SERVERPORT=51820 #optional
-      - PEERS=1 #optional
-      - PEERDNS=auto #optional
-      - INTERNAL_SUBNET=10.13.13.0 #optional
-    volumes:
-      - 'wireguard-config:/config'
-      - '/lib/modules:/lib/modules'
+  reverse-proxy:
+    container_name: traefik
+    # The official v2 Traefik docker image
+    image: traefik:v2.5
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`traefik.chuj`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
     ports:
-      - 51820:51820/udp
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  transmission:
-    image: linuxserver/transmission
-    container_name: transmission
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
-      - USER=username #optional
-      - PASS=password #optional
-    volumes:
-      - transmission-config:/config
-      - transmission-downloads:/downloads
-      - transmission-watch:/watch
+  openbooks:
+    container_name: openbooks
+    image: evanbuss/openbooks
+    labels:
+      - traefik.http.routers.openbooks.rule=Host(`openbooks.chuj`)
+      - traefik.http.services.openbooks.loadbalancer.server.port=80
+    command: --persist
     ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
+      - "9002:80"
+    volumes:
+      - "openbooks-data:/books"
     restart: unless-stopped
 
 volumes:
     portainer_data:
     adguard-data:
+            external: true
     adguard-config:
-    wireguard-config:
-    transmission-config:
-    transmission-downloads:
-    transmission-watch:
+            external: true
+    openbooks-data:
+
