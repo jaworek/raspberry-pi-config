@@ -4,17 +4,17 @@ services:
   adguard:
     container_name: adguard
     image: adguard/adguardhome
+    labels:
+      - traefik.http.routers.adguard.rule=Host(`adguard.chuj`)
+      - traefik.http.services.adguard.loadbalancer.server.port=80
     ports:
       - '53:53/tcp'
       - '53:53/udp'
-      - '67:67/udp'
-      - '68:68/tcp'
-      - '68:68/udp'
-      - '80:80/tcp'
+      - '9001:80/tcp'
       - '443:443/tcp'
-      - '853:853/tcp'
+      - '443:443/udp'
       - '3000:3000/tcp'
-    network_mode: host
+        #    network_mode: host
     volumes:
       - 'adguard-data:/opt/adguardhome/work'
       - 'adguard-config:/opt/adguardhome/conf'

@@ -4,6 +4,9 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
+    labels:
+      - traefik.http.routers.portainer.rule=Host(`portainer.chuj`)
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
     ports:
       - "8000:8000"
       - "9000:9000"

@@ -1,13 +1,18 @@
 version: "3.8"
 
 services:
-  openbooks:
+   openbooks:
+    container_name: openbooks
     image: evanbuss/openbooks
+    labels:
+      - traefik.http.routers.openbooks.rule=Host(`openbooks.chuj`)
+      - traefik.http.services.openbooks.loadbalancer.server.port=80
     command: --persist
-    ports: 
-      - "8080:80"
+    ports:
+      - "9002:80"
     volumes:
       - "openbooks-data:/books"
+    restart: unless-stopped
 
 volumes:
   openbooks-data:
