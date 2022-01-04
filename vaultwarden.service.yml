@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    labels:
+    volumes:
+      - "vw-data:/data"
+    ports:
+      - "9004:80"
+
+
+volumes:
+  vw-data:
