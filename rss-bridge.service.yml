@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  rss-bridge:
+    container_name: rss-bridge
+    image: rssbridge/rss-bridge:latest
+    labels:
+      - traefik.http.routers.adguard.rule=Host(`rss.chuj`)
+      - traefik.http.services.adguard.loadbalancer.server.port=80
+    ports:
+      - '9004:80'
+    volumes:
+      - 'rss-bridge-data:/config'
+    restart: unless-stopped
+
+volumes:
+  rss-bridge-data:
