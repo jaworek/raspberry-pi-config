@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  image: searx/searx
+  container_name: searx
+  ports:
+    - ""
+  volumes:
+  restart: unless-stopped
+
+volumes:
