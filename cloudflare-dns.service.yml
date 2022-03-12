@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+ cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: oznu/cloudflare-ddns:latest
+    environment:
+      - API_KEY=DJEb5Hxs5fpJZNNzJXVUTUdN_ZIBdP9BGvR61dsj
+      - ZONE=jwr.ski
+      - SUBDOMAIN=home
+      - PROXIED=false

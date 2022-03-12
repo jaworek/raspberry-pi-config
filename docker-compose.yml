@@ -5,7 +5,7 @@ services:
     container_name: portainer
     image: portainer/portainer-ce:latest
     labels:
-      - traefik.http.routers.portainer.rule=Host(`portainer.chuj`)
+      - traefik.http.routers.portainer.rule=Host(`portainer.lan`)
       - traefik.http.services.portainer.loadbalancer.server.port=9000
     ports:
       - "8000:8000"
@@ -19,7 +19,7 @@ services:
     container_name: adguard
     image: adguard/adguardhome
     labels:
-      - traefik.http.routers.adguard.rule=Host(`adguard.chuj`)
+      - traefik.http.routers.adguard.rule=Host(`adguard.lan`)
       - traefik.http.services.adguard.loadbalancer.server.port=80
     ports:
       - '53:53/tcp'
@@ -39,7 +39,7 @@ services:
     # The official v2 Traefik docker image
     image: traefik:v2.5
     labels:
-      - traefik.http.routers.traefik.rule=Host(`traefik.chuj`)
+      - traefik.http.routers.traefik.rule=Host(`traefik.lan`)
       - traefik.http.services.traefik.loadbalancer.server.port=8080
     # Enables the web UI and tells Traefik to listen to docker
     command: --api.insecure=true --providers.docker
@@ -57,14 +57,24 @@ services:
     container_name: openbooks
     image: evanbuss/openbooks
     labels:
-      - traefik.http.routers.openbooks.rule=Host(`openbooks.chuj`)
-      - traefik.http.services.openbooks.loadbalancer.server.port=80
+      - traefik.http.routers.openbooks.rule=Host(`openbooks.lan`)
+      - traefik.http.services.openbooks.loadbalancer.server.port=9002
     command: --persist
     ports:
       - "9002:80"
     volumes:
       - "openbooks-data:/books"
     restart: unless-stopped
+
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: oznu/cloudflare-ddns:latest
+    environment:
+      - API_KEY=
+      - ZONE=jwr.ski
+      - SUBDOMAIN=home
+      - PROXIED=false
+    
 
 volumes:
     portainer_data:
