@@ -1,0 +1,22 @@
+providers:
+  docker: {}
+  file:
+    filename: "/etc/traefik/dynamic.yml"
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: "jaworek3211@gmail.com"
+      storage: "/etc/traefik/acme.json"
+      httpChallenge:
+        entryPoint: web
+
+api:
+  insecure: true
