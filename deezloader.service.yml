@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  deezloader:
+    container_name: deezloader
+    image: registry.gitlab.com/bockiii/deemix-docker
+    ports:
+      - "6595:6595"
+    volumes:
+      - "deezloader-data:/downloads"
+      - "deezloader-config:/config"
+
+volumes:
+  deezloader-data:
+  deezloader-config:
